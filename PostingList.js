@@ -17,6 +17,14 @@ export default function PostingList() {
             .catch(err => console.error(err))
     }
 
+    const [user, setUser] = useState(null)
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/api/me", {withCredentials: true})
+            .then(res => setUser(res.data))
+            .catch(() => setUser(null))
+    })
+
     return (
         <>
             <h2>게시글 목록</h2>
@@ -29,6 +37,18 @@ export default function PostingList() {
                     </li>
                 ))}
             </ul>
+            {user ? (
+                <>
+                    <p>{user.userid}님 환영합니다!</p>
+                </>
+            ) : (
+                <>
+                    <h2>회원가입 하기</h2>
+                    <Link to="/register">가입하기</Link>
+                    <h2>로그인 하기</h2>
+                    <Link to="/login">로그인</Link>
+                </>
+            )}
         </>
     )
 }
